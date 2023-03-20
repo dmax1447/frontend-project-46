@@ -9,7 +9,7 @@
     "dist"
   ],
   "type": "module",
-  "main": "index.js",
+  "main": "bin/gendiff.js",
   "scripts": {
     "build": "babel bin/gendiff.js -d dist/bin",
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -10,9 +10,12 @@ program
   .argument('<filepath1>')
   .argument('<filepath2>')
   .option('-f, --format <type>', 'output format' )
-program.parse();
+program.parse()
+
+const [filepath1, filepath2] = program.args
+const options = program.opts()
 
 if (program.args.length) {
-  genDiff(program.args)
+  genDiff({filepath1, filepath2, options})
 }
 
