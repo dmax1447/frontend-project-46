@@ -1,0 +1,36 @@
+{
+  "name": "frontend-project-46",
+  "version": "1.0.0",
+  "description": "hexlet diff calculator",
+  "bin": {
+    "gendiff": "src/bin/gendiff.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "build": "babel src/bin/gendiff.js -d dist/bin",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmax1447/frontend-project-46.git"
+  },
+  "author": "dmax1447",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dmax1447/frontend-project-46/issues"
+  },
+  "homepage": "https://github.com/dmax1447/frontend-project-46#readme",
+  "dependencies": {
+    "commander": "^10.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.3",
+    "@babel/node": "^7.20.7",
+    "@babel/preset-env": "^7.20.2",
+    "babel-loader": "^9.1.2"
+  }
+}
