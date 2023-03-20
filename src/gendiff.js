@@ -5,7 +5,15 @@ function getFileContent(filepath) {
   const cwd = process.cwd()
   const fileType = path.extname(filepath).replace('.', '')
   const isAbsolutePath = path.isAbsolute(filepath)
-  const content = fs.readFileSync(isAbsolutePath ? path.resolve(filepath) : path.resolve(cwd, path.normalize(filepath)))
+
+  let content
+  try {
+    content = fs.readFileSync(isAbsolutePath ? path.resolve(filepath) : path.resolve(cwd, path.normalize(filepath)))
+  } catch (e) {
+    console.log(e)
+    throw new Error('error reading file')
+  }
+
   let parsed
   switch (fileType) {
     case 'json':
