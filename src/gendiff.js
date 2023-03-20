@@ -1,5 +1,5 @@
 function genDiff(params) {
-    console.log('run gendiff with params:', params)
+    console.log('run genDiff with params:', params)
 }
 
-module.exports = genDiff()
+export default genDiff

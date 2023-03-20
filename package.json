@@ -1,16 +1,17 @@
 {
-  "name": "frontend-project-46",
-  "version": "1.0.0",
+  "name": "@hexlet/code",
+  "version": "0.1.0",
   "description": "hexlet diff calculator",
   "bin": {
-    "gendiff": "src/bin/gendiff.js"
+    "gendiff": "bin/gendiff.js"
   },
   "files": [
     "dist"
   ],
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "build": "babel src/bin/gendiff.js -d dist/bin",
+    "build": "babel bin/gendiff.js -d dist/bin",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
