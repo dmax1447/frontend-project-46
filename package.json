@@ -25,7 +25,8 @@
   },
   "homepage": "https://github.com/dmax1447/frontend-project-46#readme",
   "dependencies": {
-    "commander": "^10.0.0"
+    "commander": "^10.0.0",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@babel/cli": "^7.21.0",
