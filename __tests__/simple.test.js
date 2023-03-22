@@ -1,13 +1,7 @@
 import { test, expect } from '@jest/globals';
-import path, { dirname } from 'path';
-import { fileURLToPath } from 'url';
 import { calculateDiff, getFileContent, getFileType } from '../src/utils.js';
 import parse from '../src/parsers.js';
 import genDiff from '../src/gendiff.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 
 const struct1 = {
   host: 'hexlet.io',
@@ -34,6 +28,20 @@ const diffExpected = `{
 test('calculateDiff should generate correct diff from objects', () => {
   const diff = calculateDiff(struct1, struct2)
   expect(diff).toBe(diffExpected);
+})
+
+test('getFileContent should return correct file content', () => {
+  const content = getFileContent('./__fixtures__/read_test.txt')
+  const expected = 'test\n'
+  expect(content.toString()).toBe(expected);
+})
+
+test('getFileType should return correct file type', () => {
+  const types = ['json', 'yml']
+  types.forEach((expectedType) => {
+    const type = getFileType(`./__fixtures__/file1.${expectedType}`)
+    expect(type).toBe(expectedType);
+  })
 })
 
 test('parse should correct process JSON', () => {
