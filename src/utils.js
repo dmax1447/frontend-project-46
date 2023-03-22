@@ -6,13 +6,8 @@ function getFileContent(filepath) {
   const fileType = path.extname(filepath).replace('.', '')
   const isAbsolutePath = path.isAbsolute(filepath)
 
-  let content
-  try {
-    content = fs.readFileSync(isAbsolutePath ? path.resolve(filepath) : path.resolve(cwd, path.normalize(filepath)))
-  } catch (e) {
-    console.log(e)
-    throw new Error('error reading file')
-  }
+  const content = fs.readFileSync(isAbsolutePath
+    ? path.resolve(filepath) : path.resolve(cwd, path.normalize(filepath)))
 
   let parsed
   switch (fileType) {
@@ -25,37 +20,36 @@ function getFileContent(filepath) {
   return parsed
 }
 
-function getDiff(obj1, obj2) {
-  const merged = Object.assign({}, obj1, obj2)
+function calculateDiff(obj1, obj2) {
+  const merged = { ...obj1, ...obj2 }
   const normalaizedKeys = [...new Set(Object.keys(merged))]
-    .sort((el1, el2) => el1 > el2 ? 1 : -1)
-  normalaizedKeys
+    .sort((el1, el2) => (el1 > el2 ? 1 : -1))
+
   const diff = normalaizedKeys.reduce((acc, key) => {
     let newAcc = ''
-    const hasKeyObj1 = obj1.hasOwnProperty(key)
-    const hasKeyObj2 = obj2.hasOwnProperty(key)
+    const hasKeyObj1 = Object.prototype.hasOwnProperty.call(obj1, key)
+    const hasKeyObj2 = Object.prototype.hasOwnProperty.call(obj2, key)
     if (!hasKeyObj2) {
-      newAcc = acc +
-        `  - ${key}: ${obj1[key]}\n`
+      newAcc = `${acc
+      }  - ${key}: ${obj1[key]}\n`
     } else
 
     if (!hasKeyObj1) {
-      newAcc = acc +
-        `  + ${key}: ${obj2[key]}\n`
-
+      newAcc = `${acc
+      }  + ${key}: ${obj2[key]}\n`
     } else
 
     if (obj1[key] === obj2[key]) {
-      newAcc = acc +
-        `    ${key}: ${obj1[key]}\n`
+      newAcc = `${acc
+      }    ${key}: ${obj1[key]}\n`
     } else {
-      newAcc = acc +
-        `  - ${key}: ${obj1[key]}\n` +
-        `  + ${key}: ${obj2[key]}\n`
+      newAcc = `${acc
+      }  - ${key}: ${obj1[key]}\n`
+        + `  + ${key}: ${obj2[key]}\n`
     }
     return newAcc
   }, '\n')
   return `{${diff}}`
 }
 
-export {getDiff, getFileContent}
+export { calculateDiff, getFileContent }

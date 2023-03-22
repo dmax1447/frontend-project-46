@@ -12,7 +12,10 @@
   "main": "bin/gendiff.js",
   "scripts": {
     "build": "babel bin/gendiff.js -d dist/bin",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "npx eslint .",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --no-warnings",
+    "test:watch": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --watch --no-warnings",
+    "test:coverage": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -33,6 +36,16 @@
     "@babel/core": "^7.21.3",
     "@babel/node": "^7.20.7",
     "@babel/preset-env": "^7.20.2",
-    "babel-loader": "^9.1.2"
+    "@jest/globals": "^29.5.0",
+    "babel-loader": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.36.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jest": "^27.2.1",
+    "jest": "^29.5.0",
+    "jest-cli": "^29.5.0",
+    "npm-check-updates": "^16.7.13",
+    "simple-git-hooks": "^2.8.1"
   }
 }

@@ -1,9 +1,8 @@
-import {getFileContent, getDiff} from "./utils.js";
+import { getFileContent, calculateDiff } from './utils.js';
 
-function genDiff({filepath1, filepath2, options= {}}) {
+function genDiff({ filepath1, filepath2 }) {
   const [file1, file2] = [filepath1, filepath2].map(getFileContent)
-  const diff = getDiff(file1, file2)
-  console.log('\n' + diff)
+  const diff = calculateDiff(file1, file2)
   return diff
 }
 
