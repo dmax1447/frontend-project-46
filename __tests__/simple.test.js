@@ -1,7 +1,8 @@
 import { test, expect } from '@jest/globals';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { calculateDiff, getFileContent } from '../src/utils.js';
+import { calculateDiff, getFileContent, getFileType } from '../src/utils.js';
+import parse from '../src/parsers.js';
 import genDiff from '../src/gendiff.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -35,14 +36,24 @@ test('calculateDiff should generate correct diff from objects', () => {
   expect(diff).toBe(diffExpected);
 })
 
-test('getFileContent should return correct content for JSON file', () => {
-  const content = getFileContent(getFixturePath('file1.json'))
-  expect(content).toStrictEqual(struct1)
+test('parse should correct process JSON', () => {
+  const content = getFileContent('./__fixtures__/file1.json')
+  const parsed = parse({ content, type: 'json' })
+  expect(parsed).toStrictEqual(struct1)
+})
+
+test('parse should correct process YAML', () => {
+  const content = getFileContent('./__fixtures__/file1.yml')
+  const parsed = parse({ content, type: 'yml' })
+  expect(parsed).toStrictEqual(struct1)
 })
 
 test('genDiff should generate correct diff from JSON files', () => {
-  const filepath1 = getFixturePath('file1.json')
-  const filepath2 = getFixturePath('file2.json')
-  const diff = genDiff({ filepath1, filepath2 })
+  const diff = genDiff({ filepath1: './__fixtures__/file1.json', filepath2: './__fixtures__/file2.json' })
+  expect(diff).toBe(diffExpected)
+})
+
+test('genDiff should generate correct diff from YML files', () => {
+  const diff = genDiff({ filepath1: './__fixtures__/file1.yml', filepath2: './__fixtures__/file2.yml' })
   expect(diff).toBe(diffExpected)
 })
