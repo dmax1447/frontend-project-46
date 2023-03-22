@@ -44,24 +44,22 @@ test('getFileType should return correct file type', () => {
   })
 })
 
-test('parse should correct process JSON', () => {
-  const content = getFileContent('./__fixtures__/file1.json')
-  const parsed = parse({ content, type: 'json' })
-  expect(parsed).toStrictEqual(struct1)
+test('parse should correct process all file types', () => {
+  const extensions = ['json', 'yml']
+  extensions.forEach((extension) => {
+    const content = getFileContent(`./__fixtures__/file1.${extension}`)
+    const parsed = parse({ content, type: extension })
+    expect(parsed).toStrictEqual(struct1)
+  })
 })
 
-test('parse should correct process YAML', () => {
-  const content = getFileContent('./__fixtures__/file1.yml')
-  const parsed = parse({ content, type: 'yml' })
-  expect(parsed).toStrictEqual(struct1)
-})
-
-test('genDiff should generate correct diff from JSON files', () => {
-  const diff = genDiff({ filepath1: './__fixtures__/file1.json', filepath2: './__fixtures__/file2.json' })
-  expect(diff).toBe(diffExpected)
-})
-
-test('genDiff should generate correct diff from YML files', () => {
-  const diff = genDiff({ filepath1: './__fixtures__/file1.yml', filepath2: './__fixtures__/file2.yml' })
-  expect(diff).toBe(diffExpected)
+test('genDiff should generate correct diff all file types', () => {
+  const extensions = ['json', 'yml']
+  extensions.forEach((extension) => {
+    const diff = genDiff({
+      filepath1: `./__fixtures__/file1.${extension}`,
+      filepath2: `./__fixtures__/file2.${extension}`,
+    })
+    expect(diff).toBe(diffExpected)
+  })
 })
