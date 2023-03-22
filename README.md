@@ -1,6 +1,6 @@
 ## Diff generator
 simple and smart tool with cli interface and lib package for comparing JSON and YAML files 
-***
+
 ### Project status:
 [![Actions Status](https://github.com/dmax1447/frontend-project-46/workflows/hexlet-check/badge.svg)](https://github.com/dmax1447/frontend-project-46/actions)
 [![makefile-test](https://github.com/dmax1447/frontend-project-46/actions/workflows/makefile.yml/badge.svg)](https://github.com/dmax1447/frontend-project-46/actions/workflows/makefile.yml)
@@ -21,3 +21,4 @@ for cli help use -h option
 ```bash
 /bin/gendiff.js <path_to_file1> <path_to_file2>
 ```
+[![asciicast](https://asciinema.org/a/nrneQuvp1wOpbTuTAXr8KWv77.svg)](https://asciinema.org/a/nrneQuvp1wOpbTuTAXr8KWv77)
