@@ -1,5 +1,7 @@
 import { test, expect } from '@jest/globals';
-import { calculateDiff, getFileContent, getFileType } from '../src/utils.js';
+import {
+  calculateDiff, stylish, getFileContent, getFileType,
+} from '../src/utils.js';
 import parse from '../src/parsers.js';
 import genDiff from '../src/gendiff.js';
 
@@ -25,8 +27,9 @@ const diffExpected = `{
   + verbose: true
 }`
 
-test('calculateDiff should generate correct diff from objects', () => {
-  const diff = calculateDiff(struct1, struct2)
+test('calculateDiff should generate correct diff from plain objects', () => {
+  const ast = calculateDiff(struct1, struct2)
+  const diff = stylish(ast)
   expect(diff).toBe(diffExpected);
 })
 
@@ -60,6 +63,7 @@ test('genDiff should generate correct diff all file types', () => {
       filepath1: `./__fixtures__/file1.${extension}`,
       filepath2: `./__fixtures__/file2.${extension}`,
     })
+
     expect(diff).toBe(diffExpected)
   })
 })
