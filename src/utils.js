@@ -3,6 +3,8 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 import _ from 'lodash';
 
+const baseIndent = '  '
+
 function getFileContent(filepath) {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
@@ -65,26 +67,36 @@ function calculateDiff(obj1, obj2) {
   return ast
 }
 
-function stringifyAst(ast, level) {
+function stringifyAst(ast, level, shift = 0) {
   const keys = Object.keys(ast)
-  const baseIndent = '  '
+
   const formattedLevel = keys.reduce((acc, key) => {
     const nodeInfo = ast[key]
     const { state, value, hasChildren } = nodeInfo
+    const indent = baseIndent.repeat(level) + baseIndent.repeat(shift)
     let newEntry = ''
-    const mapValueStateToSymbol = {
-      new: '+',
-      equal: ' ',
-      deleted: '-',
+
+    switch (state) {
+      case 'new':
+        newEntry = `\n${indent}+ ${key}: ${value}`
+        break
+      case 'deleted':
+        newEntry = `\n${indent}- ${key}: ${value}`
+        break
+      case 'equal':
+        newEntry = `\n${indent}  ${key}: ${value}`
+        break
+      case 'changed':
+        if (!hasChildren) {
+          newEntry = `\n${indent}- ${key}: ${value[0]}\n${indent}+ ${key}: ${value[1]}`
+        } else {
+          newEntry = `\n${indent}  ${key}: ${stringifyAst(value, level + 1, 1)}`
+        }
+        break
+      default:
+        break
     }
-    const simpleStates = ['new', 'deleted', 'equal']
-    if (simpleStates.includes(state)) {
-      newEntry = `\n${baseIndent.repeat(level)}${mapValueStateToSymbol[state]} ${key}: ${value}`
-    } else if (!hasChildren) {
-      newEntry = `\n${baseIndent.repeat(level)}- ${key}: ${value[0]}\n${baseIndent.repeat(level)}+ ${key}: ${value[1]}`
-    } else {
-      newEntry = `\n${baseIndent.repeat(level)}  ${key}: ${stringifyAst(value, level + 1)}`
-    }
+
     return acc + newEntry
   }, '')
   let indent = baseIndent.repeat(level - 1)

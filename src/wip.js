@@ -105,8 +105,9 @@ const diffExpected = `{
         fee: 100500
     }
 }`
-
+console.log('-------------------------------------------------')
 const ast = calculateDiff(struct1, struct2)
-console.log(ast)
+// console.log(ast)
 const diff = stylish(ast)
 console.log(diff)
+console.log('-------------------------------------------------')
