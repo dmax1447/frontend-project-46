@@ -1,6 +1,6 @@
 import { test, expect } from '@jest/globals';
 import {
-  calculateDiff, stylish, getFileContent, getFileType,
+  getFileContent, getFileType,
 } from '../src/utils.js';
 import parse from '../src/parsers.js';
 import genDiff from '../src/gendiff.js';
@@ -11,27 +11,6 @@ const struct1 = {
   proxy: '123.234.53.22',
   follow: false,
 }
-
-const struct2 = {
-  timeout: 20,
-  verbose: true,
-  host: 'hexlet.io',
-}
-
-const diffExpected = `{
-  - follow: false
-    host: hexlet.io
-  - proxy: 123.234.53.22
-  - timeout: 50
-  + timeout: 20
-  + verbose: true
-}`
-
-test('calculateDiff should generate correct diff from plain objects', () => {
-  const ast = calculateDiff(struct1, struct2)
-  const diff = stylish(ast)
-  expect(diff).toBe(diffExpected);
-})
 
 test('getFileContent should return correct file content', () => {
   const content = getFileContent('./__fixtures__/read_test.txt')
@@ -63,7 +42,16 @@ test('genDiff should generate correct diff all file types', () => {
       filepath1: `./__fixtures__/file1.${extension}`,
       filepath2: `./__fixtures__/file2.${extension}`,
     })
-
-    expect(diff).toBe(diffExpected)
+    const expectedOutput = getFileContent('./__fixtures__/log_simple.txt').toString()
+    expect(diff.trim()).toBe(expectedOutput.trim())
   })
+})
+
+test('calculateDiff should generate correct diff from nested objects', () => {
+  const expectedOutput = getFileContent('./__fixtures__/log_nested.txt').toString()
+  const diff = genDiff({
+    filepath1: './__fixtures__/file1n.json',
+    filepath2: './__fixtures__/file2n.json',
+  })
+  expect(diff.trim()).toBe(expectedOutput.trim());
 })

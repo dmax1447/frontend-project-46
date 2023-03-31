@@ -5,6 +5,13 @@ import _ from 'lodash';
 
 const baseIndent = '  '
 
+const isObject = (obj) => obj !== null && typeof obj === 'object'
+const stateSymbol = {
+  new: '+',
+  deleted: '-',
+  equal: ' ',
+}
+
 function getFileContent(filepath) {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
@@ -50,7 +57,7 @@ function calculateDiff(obj1, obj2) {
       node.value = obj1[key]
     } else {
       const values = [obj1[key], obj2[key]]
-      const shouldProcessChildren = values.every((v) => typeof v === 'object' && !Array.isArray(v))
+      const shouldProcessChildren = values.every((v) => v !== null && typeof v === 'object' && !Array.isArray(v))
       node.state = 'changed'
       if (shouldProcessChildren) {
         node.hasChildren = true
@@ -66,44 +73,49 @@ function calculateDiff(obj1, obj2) {
   }, {})
   return ast
 }
+function stringifyObject(obj, bodyIndentCount) {
+  const keys = Object.keys(obj)
+  const indent = baseIndent.repeat(bodyIndentCount)
+  const keyIndent = baseIndent.repeat(bodyIndentCount + 2)
+  const serializedKeys = keys.reduce((acc, key) => {
+    const value = obj[key]
+    const normalizedValue = isObject(value)
+      ? stringifyObject(value, bodyIndentCount + 2)
+      : value
+    const entry = `\n${keyIndent}${key}: ${normalizedValue}`
+    return acc + entry
+  }, '')
 
-function stringifyAst(ast, level, shift = 0) {
+  return `{${serializedKeys}\n${indent}}`
+}
+
+function stringifyAst(ast, bodyIndentCount) {
   const keys = Object.keys(ast)
 
   const formattedLevel = keys.reduce((acc, key) => {
-    const nodeInfo = ast[key]
-    const { state, value, hasChildren } = nodeInfo
-    const indent = baseIndent.repeat(level) + baseIndent.repeat(shift)
-    let newEntry = ''
+    const indent = baseIndent.repeat(bodyIndentCount)
 
-    switch (state) {
-      case 'new':
-        newEntry = `\n${indent}+ ${key}: ${value}`
-        break
-      case 'deleted':
-        newEntry = `\n${indent}- ${key}: ${value}`
-        break
-      case 'equal':
-        newEntry = `\n${indent}  ${key}: ${value}`
-        break
-      case 'changed':
-        if (!hasChildren) {
-          newEntry = `\n${indent}- ${key}: ${value[0]}\n${indent}+ ${key}: ${value[1]}`
-        } else {
-          newEntry = `\n${indent}  ${key}: ${stringifyAst(value, level + 1, 1)}`
-        }
-        break
-      default:
-        break
+    const getEntry = (nodeInfo) => {
+      const { state, value, hasChildren } = nodeInfo
+      const valueIsObject = isObject(value)
+      const normalizeValue = (v) => (isObject(v) ? stringifyObject(v, bodyIndentCount + 1) : v)
+
+      if (state === 'changed') {
+        const normalizedValues = Array.isArray(value) ? value.map(normalizeValue) : value
+        return hasChildren
+          ? `\n${indent}  ${key}: ${stringifyAst(value, bodyIndentCount + 2)}`
+          : `\n${indent}- ${key}: ${normalizedValues[0]}\n${indent}+ ${key}: ${normalizedValues[1]}`
+      }
+      return valueIsObject ? `\n${indent}${stateSymbol[state]} ${key}: ${stringifyObject(value, bodyIndentCount + 1)}` : `\n${indent}${stateSymbol[state]} ${key}: ${value}`
     }
 
-    return acc + newEntry
+    return acc + getEntry(ast[key])
   }, '')
-  let indent = baseIndent.repeat(level - 1)
-  if (level > 1) {
-    indent += '  '
-  }
-  return `{${formattedLevel}\n${indent}}`
+
+  const trialIndentCount = bodyIndentCount > 0 ? bodyIndentCount - 1 : 0
+  const trialIndent = baseIndent.repeat(trialIndentCount)
+
+  return `{${formattedLevel}\n${trialIndent}}`
 }
 
 function stylish(ast) {
@@ -111,5 +123,5 @@ function stylish(ast) {
 }
 
 export {
-  calculateDiff, stylish, getFileContent, getFileType,
+  calculateDiff, stylish, getFileContent, getFileType, stringifyObject,
 }
