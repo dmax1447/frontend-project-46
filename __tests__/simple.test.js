@@ -65,14 +65,5 @@ test('genDiff should generate correct output with "plain" formatter', () => {
     })
     const expectedDiffPlain = getFileContent('./__fixtures__/log_nested_plain.txt').toString()
     expect(diffPlain.trim()).toBe(expectedDiffPlain.trim())
-    // const diffNestedPlain = genDiff({
-    //   filepath1: `./__fixtures__/file1n.${extension}`,
-    //   filepath2: `./__fixtures__/file2n.${extension}`,
-    //   options: {
-    //     format: 'plain',
-    //   },
-    // })
-    // const expectedDiffNestedPlain = getFileContent('./__fixtures__/log_nested_plain.txt').toString()
-    // expect(diffNestedPlain.trim()).toBe(expectedDiffNestedPlain.trim())
   })
 })
