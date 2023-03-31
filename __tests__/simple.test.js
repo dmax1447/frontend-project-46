@@ -35,7 +35,7 @@ test('parse should correct process all file types', () => {
   })
 })
 
-test('genDiff should generate correct diff for all file types with plain objects', () => {
+test('genDiff should generate correct diff for all file types', () => {
   const extensions = ['json', 'yml']
   extensions.forEach((extension) => {
     const diff = genDiff({
@@ -44,17 +44,11 @@ test('genDiff should generate correct diff for all file types with plain objects
     })
     const expectedOutput = getFileContent('./__fixtures__/log_simple.txt').toString()
     expect(diff.trim()).toBe(expectedOutput.trim())
-  })
-})
-
-test('genDiff should generate correct diff for all file types with nested objects', () => {
-  const extensions = ['json', 'yml']
-  extensions.forEach((extension) => {
-    const diff = genDiff({
+    const diffNested = genDiff({
       filepath1: `./__fixtures__/file1n.${extension}`,
       filepath2: `./__fixtures__/file2n.${extension}`,
     })
-    const expectedOutput = getFileContent('./__fixtures__/log_nested.txt').toString()
-    expect(diff.trim()).toBe(expectedOutput.trim())
+    const expextedDiffNested = getFileContent('./__fixtures__/log_nested.txt').toString()
+    expect(diffNested.trim()).toBe(expextedDiffNested.trim())
   })
 })
