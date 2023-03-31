@@ -95,7 +95,7 @@ function stringifyPlain(ast, parentPath) {
       entry = `\nProperty '${path.join('.')}' ${stateToActionName[node.state]} ${getNormalaizedValue(node)}`
     }
 
-    return acc + entry.trimRight()
+    return acc + entry.trimEnd()
   }, '')
   return formattedLevel
 }
