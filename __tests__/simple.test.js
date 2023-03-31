@@ -42,13 +42,13 @@ test('genDiff should generate correct diff for all file types', () => {
       filepath1: `./__fixtures__/file1.${extension}`,
       filepath2: `./__fixtures__/file2.${extension}`,
     })
-    const expectedOutput = getFileContent('./__fixtures__/log_simple.txt').toString()
-    expect(diff.trim()).toBe(expectedOutput.trim())
+    const expectedDiff = getFileContent('./__fixtures__/log_simple.txt').toString()
+    expect(diff.trim()).toBe(expectedDiff.trim())
     const diffNested = genDiff({
       filepath1: `./__fixtures__/file1n.${extension}`,
       filepath2: `./__fixtures__/file2n.${extension}`,
     })
-    const expextedDiffNested = getFileContent('./__fixtures__/log_nested.txt').toString()
-    expect(diffNested.trim()).toBe(expextedDiffNested.trim())
+    const expectedDiffNested = getFileContent('./__fixtures__/log_nested.txt').toString()
+    expect(diffNested.trim()).toBe(expectedDiffNested.trim())
   })
 })

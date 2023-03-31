@@ -29,18 +29,24 @@ function stringifyAst(ast, bodyIndentCount) {
     const { state, value, hasChildren } = nodeInfo
     const valueIsObject = isObject(value)
     const normalizeValue = (v) => (isObject(v) ? stringifyObject(v, bodyIndentCount + 1) : v)
-    if (state === 'changed') {
-      const normalizedValues = Array.isArray(value) ? value.map(normalizeValue) : value
-      return hasChildren
-        ? `\n${indent}  ${entryKey}: ${stringifyAst(value, bodyIndentCount + 2)}`
-        : `\n${indent}- ${entryKey}: ${normalizedValues[0]}\n${indent}+ ${entryKey}: ${normalizedValues[1]}`
+    let entry = ''
+    const normalizedValues = Array.isArray(value) ? value.map(normalizeValue) : value
+    switch (state) {
+      case 'changed':
+        entry = hasChildren
+          ? `\n${indent}  ${entryKey}: ${stringifyAst(value, bodyIndentCount + 2)}`
+          : `\n${indent}- ${entryKey}: ${normalizedValues[0]}\n${indent}+ ${entryKey}: ${normalizedValues[1]}`
+        break
+      default:
+        entry = valueIsObject
+          ? `\n${indent}${stateSymbol[state]} ${entryKey}: ${stringifyObject(value, bodyIndentCount + 1)}`
+          : `\n${indent}${stateSymbol[state]} ${entryKey}: ${value}`
     }
-    return valueIsObject ? `\n${indent}${stateSymbol[state]} ${entryKey}: ${stringifyObject(value, bodyIndentCount + 1)}` : `\n${indent}${stateSymbol[state]} ${entryKey}: ${value}`
+    return entry
   }
 
   const formattedLevel = keys.reduce((acc, key) => acc + getEntry(ast[key], key), '')
-  const trialIndentCount = bodyIndentCount > 0 ? bodyIndentCount - 1 : 0
-  const trialIndent = baseIndent.repeat(trialIndentCount)
+  const trialIndent = baseIndent.repeat(bodyIndentCount - 1)
 
   return `{${formattedLevel}\n${trialIndent}}`
 }
