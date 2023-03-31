@@ -24,27 +24,21 @@ function stringifyObject(obj, bodyIndentCount) {
 
 function stringifyAst(ast, bodyIndentCount) {
   const keys = Object.keys(ast)
-
-  const formattedLevel = keys.reduce((acc, key) => {
-    const indent = baseIndent.repeat(bodyIndentCount)
-
-    const getEntry = (nodeInfo) => {
-      const { state, value, hasChildren } = nodeInfo
-      const valueIsObject = isObject(value)
-      const normalizeValue = (v) => (isObject(v) ? stringifyObject(v, bodyIndentCount + 1) : v)
-
-      if (state === 'changed') {
-        const normalizedValues = Array.isArray(value) ? value.map(normalizeValue) : value
-        return hasChildren
-          ? `\n${indent}  ${key}: ${stringifyAst(value, bodyIndentCount + 2)}`
-          : `\n${indent}- ${key}: ${normalizedValues[0]}\n${indent}+ ${key}: ${normalizedValues[1]}`
-      }
-      return valueIsObject ? `\n${indent}${stateSymbol[state]} ${key}: ${stringifyObject(value, bodyIndentCount + 1)}` : `\n${indent}${stateSymbol[state]} ${key}: ${value}`
+  const indent = baseIndent.repeat(bodyIndentCount)
+  const getEntry = (nodeInfo, entryKey) => {
+    const { state, value, hasChildren } = nodeInfo
+    const valueIsObject = isObject(value)
+    const normalizeValue = (v) => (isObject(v) ? stringifyObject(v, bodyIndentCount + 1) : v)
+    if (state === 'changed') {
+      const normalizedValues = Array.isArray(value) ? value.map(normalizeValue) : value
+      return hasChildren
+        ? `\n${indent}  ${entryKey}: ${stringifyAst(value, bodyIndentCount + 2)}`
+        : `\n${indent}- ${entryKey}: ${normalizedValues[0]}\n${indent}+ ${entryKey}: ${normalizedValues[1]}`
     }
+    return valueIsObject ? `\n${indent}${stateSymbol[state]} ${entryKey}: ${stringifyObject(value, bodyIndentCount + 1)}` : `\n${indent}${stateSymbol[state]} ${entryKey}: ${value}`
+  }
 
-    return acc + getEntry(ast[key])
-  }, '')
-
+  const formattedLevel = keys.reduce((acc, key) => acc + getEntry(ast[key], key), '')
   const trialIndentCount = bodyIndentCount > 0 ? bodyIndentCount - 1 : 0
   const trialIndent = baseIndent.repeat(trialIndentCount)
 
