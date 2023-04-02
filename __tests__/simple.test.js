@@ -15,7 +15,7 @@ const struct1 = {
 test('getFileContent should return correct file content', () => {
   const content = getFileContent('./__fixtures__/read_test.txt');
   const expected = 'test\n';
-  expect(content.toString()).toBe(expected);1``
+  expect(content.toString()).toBe(expected);
 });
 
 test('getFileType should return correct file type', () => {
