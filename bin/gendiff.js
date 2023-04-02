@@ -10,7 +10,7 @@ program
   .argument('<filepath1>')
   .argument('<filepath2>')
   .option('-f, --format <type>', 'output format', 'stylish')
-program.parse()
+  .parse()
 
 const [filepath1, filepath2] = program.args
 const options = program.opts()
