@@ -5,10 +5,10 @@ import json from './json.js';
 export default (type) => {
   switch (type) {
     case 'plain':
-      return plain
+      return plain;
     case 'json':
-      return json
+      return json;
     default:
-      return stylish
+      return stylish;
   }
-}
+};
