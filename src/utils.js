@@ -5,9 +5,11 @@ import fs from 'fs';
 function getFileContent(filepath = '') {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
-  const normalizedPath = path.isAbsolute(filepath)
-    ? path.resolve(filepath)
-    : path.join(__dirname, '..', filepath)
+  const isRelativePath = filepath.startsWith('.') || !path.isAbsolute(filepath)
+  const normalizedPath = isRelativePath
+    ? path.join(__dirname, '..', filepath)
+    : path.resolve(filepath)
+  console.log(`normalizedPath: "${normalizedPath}"`)
   return fs.readFileSync(normalizedPath)
 }
 function getFileType(filepath = '') {
