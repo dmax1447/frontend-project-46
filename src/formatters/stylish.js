@@ -6,11 +6,6 @@ const stateSymbol = {
   deleted: '-',
   equal: ' ',
 }
-const stateToActionName = {
-  new: 'was added with value:',
-  deleted: 'was removed',
-  changed: 'was updated.',
-}
 
 function stringifyObject(obj, bodyIndentCount) {
   const keys = Object.keys(obj)
@@ -57,54 +52,4 @@ function stringifyAst(ast, bodyIndentCount) {
   return `{${formattedLevel}\n${trialIndent}}`
 }
 
-function stringifyPlain(ast, parentPath) {
-  const getNormalaizedValue = (node) => {
-    const { value, state } = node
-    const normalizeValue = (val) => {
-      if (isObject(val)) {
-        return '[complex value]'
-      }
-      if (typeof val === 'string') {
-        return `'${val}'`
-      }
-      return val
-    }
-
-    switch (state) {
-      case 'new':
-        return `${normalizeValue(value)}`
-      case 'deleted':
-        return ''
-      case 'changed':
-        return `From ${normalizeValue(value[0])} to ${normalizeValue(value[1])}`
-      default:
-        return ''
-    }
-  }
-
-  const keys = Object.keys(ast)
-  const formattedLevel = keys.reduce((acc, key) => {
-    const node = ast[key]
-    const path = [...parentPath, key]
-    const { state, value, hasChildren } = node
-    if (state === 'equal') return acc
-    let entry
-    if (hasChildren) {
-      entry = stringifyPlain(value, path)
-    } else {
-      entry = `\nProperty '${path.join('.')}' ${stateToActionName[node.state]} ${getNormalaizedValue(node)}`
-    }
-
-    return acc + entry.trimEnd()
-  }, '')
-  return formattedLevel
-}
-
-export default {
-  stylish(ast) {
-    return stringifyAst(ast, 1)
-  },
-  plain(ast) {
-    return stringifyPlain(ast, [])
-  },
-}
+export default (ast) => stringifyAst(ast, 1)

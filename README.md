@@ -19,6 +19,9 @@ simple and smart tool with cli interface and lib package for comparing JSON and 
 ### How to use
 for cli help use -h option
 ```bash
-/bin/gendiff.js <path_to_file1> <path_to_file2>
+/bin/gendiff.js path_to_file1 path_to_file2 -f output_format
 ```
+output_format
+- stylish format with nested structures
+- plain format as plain list
 [![asciicast](https://asciinema.org/a/nrneQuvp1wOpbTuTAXr8KWv77.svg)](https://asciinema.org/a/nrneQuvp1wOpbTuTAXr8KWv77)
