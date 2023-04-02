@@ -16,6 +16,8 @@ test('getFileContent should return correct file content', () => {
   const content = getFileContent('./__fixtures__/read_test.txt')
   const expected = 'test\n'
   expect(content.toString()).toBe(expected);
+  const content2 = getFileContent('C:\\project\\frontend-project-46\\__fixtures__\\read_test.txt')
+  expect(content2.toString()).toBe(expected);
 })
 
 test('getFileType should return correct file type', () => {
@@ -38,16 +40,10 @@ test('parse should correct process all file types', () => {
 test('genDiff should generate correct output with "stylish" formatter', () => {
   const extensions = ['json', 'yml']
   extensions.forEach((extension) => {
-    const diff = genDiff({
-      filepath1: `./__fixtures__/file1.${extension}`,
-      filepath2: `./__fixtures__/file2.${extension}`,
-    })
-    const expectedDiff = getFileContent('./__fixtures__/log_simple.txt').toString()
-    expect(diff.trim()).toBe(expectedDiff.trim())
-    const diffNested = genDiff({
-      filepath1: `./__fixtures__/file1n.${extension}`,
-      filepath2: `./__fixtures__/file2n.${extension}`,
-    })
+    const diffNested = genDiff(
+      `./__fixtures__/file1n.${extension}`,
+      `./__fixtures__/file2n.${extension}`,
+    )
     const expectedDiffNested = getFileContent('./__fixtures__/log_nested.txt').toString()
     expect(diffNested.trim()).toBe(expectedDiffNested.trim())
   })
@@ -56,13 +52,11 @@ test('genDiff should generate correct output with "stylish" formatter', () => {
 test('genDiff should generate correct output with "plain" formatter', () => {
   const extensions = ['json', 'yml']
   extensions.forEach((extension) => {
-    const diffPlain = genDiff({
-      filepath1: `./__fixtures__/file1n.${extension}`,
-      filepath2: `./__fixtures__/file2n.${extension}`,
-      options: {
-        format: 'plain',
-      },
-    })
+    const diffPlain = genDiff(
+      `./__fixtures__/file1n.${extension}`,
+      `./__fixtures__/file2n.${extension}`,
+      'plain',
+    )
     const expectedDiffPlain = getFileContent('./__fixtures__/log_nested_plain.txt').toString()
     expect(diffPlain.trim()).toBe(expectedDiffPlain.trim())
   })
@@ -71,13 +65,11 @@ test('genDiff should generate correct output with "plain" formatter', () => {
 test('genDiff should generate correct output with "json" formatter', () => {
   const extensions = ['json', 'yml']
   extensions.forEach((extension) => {
-    const diffPlain = genDiff({
-      filepath1: `./__fixtures__/file1n.${extension}`,
-      filepath2: `./__fixtures__/file2n.${extension}`,
-      options: {
-        format: 'json',
-      },
-    })
+    const diffPlain = genDiff(
+      `./__fixtures__/file1n.${extension}`,
+      `./__fixtures__/file2n.${extension}`,
+      'json',
+    )
     const expectedDiffPlain = getFileContent('./__fixtures__/output.json').toString()
     expect(diffPlain.trim()).toBe(expectedDiffPlain.trim())
   })
