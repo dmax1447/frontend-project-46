@@ -6,6 +6,8 @@ function getFileContent(filepath = '') {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
   const normalizedPath = path.join(__dirname, '..', filepath)
+  console.log('filepath:', filepath)
+  console.log('normalizedPath', normalizedPath)
   return fs.readFileSync(normalizedPath)
 }
 function getFileType(filepath = '') {
