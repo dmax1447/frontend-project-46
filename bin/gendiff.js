@@ -17,6 +17,6 @@ const [filepath1, filepath2] = program.args
 const options = program.opts()
 
 if (program.args.length) {
-  const diff = genDiff({ filepath1, filepath2, options })
+  const diff = genDiff(filepath1, filepath2, options.format)
   console.log(`\n${diff}`)
 }
