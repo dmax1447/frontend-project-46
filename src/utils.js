@@ -9,7 +9,6 @@ function getFileContent(filepath = '') {
   const normalizedPath = isRelativePath
     ? path.join(__dirname, '..', filepath)
     : path.resolve(filepath)
-  console.log(`normalizedPath: "${normalizedPath}"`)
   return fs.readFileSync(normalizedPath)
 }
 function getFileType(filepath = '') {

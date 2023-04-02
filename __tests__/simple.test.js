@@ -16,8 +16,6 @@ test('getFileContent should return correct file content', () => {
   const content = getFileContent('./__fixtures__/read_test.txt')
   const expected = 'test\n'
   expect(content.toString()).toBe(expected);
-  const content2 = getFileContent('C:\\project\\frontend-project-46\\__fixtures__\\read_test.txt')
-  expect(content2.toString()).toBe(expected);
 })
 
 test('getFileType should return correct file type', () => {
