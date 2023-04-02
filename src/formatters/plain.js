@@ -45,4 +45,4 @@ function stringifyPlain(ast, parentPath) {
   return formattedLevel
 }
 
-export default (ast) => stringifyPlain(ast, [])
+export default (ast) => stringifyPlain(ast, []).trim()
