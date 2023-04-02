@@ -6,6 +6,7 @@ const stateSymbol = {
   deleted: '-',
   equal: ' ',
 }
+
 function stringifyObject(obj, bodyIndentCount) {
   const keys = Object.keys(obj)
   const indent = baseIndent.repeat(bodyIndentCount)
@@ -51,8 +52,4 @@ function stringifyAst(ast, bodyIndentCount) {
   return `{${formattedLevel}\n${trialIndent}}`
 }
 
-export default {
-  stylish(ast) {
-    return stringifyAst(ast, 1)
-  },
-}
+export default (ast) => stringifyAst(ast, 1)
