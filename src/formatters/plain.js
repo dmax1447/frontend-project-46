@@ -37,14 +37,10 @@ function stringifyPlain(ast, parentPath) {
     const path = [...parentPath, key]
     const { state, value, hasChildren } = node
     if (state === 'equal') return acc
-    let entry
     if (hasChildren) {
-      entry = stringifyPlain(value, path)
-    } else {
-      entry = `\nProperty '${path.join('.')}' ${stateToActionName[node.state]} ${getNormalaizedValue(node)}`
+      return acc + stringifyPlain(value, path).trimEnd()
     }
-
-    return acc + entry.trimEnd()
+    return acc + `\nProperty '${path.join('.')}' ${stateToActionName[node.state]} ${getNormalaizedValue(node)}`.trimEnd()
   }, '')
   return formattedLevel
 }

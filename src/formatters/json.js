@@ -6,16 +6,14 @@ function processAst(ast, parentPath) {
     const { state, value, hasChildren } = node
     if (state === 'equal') return acc
     if (hasChildren) {
-      // entry = processAst(value, path)
       return [...acc, processAst(value, path)]
-    } else {
-      const entry = {
-        path: path.join('.'),
-        state,
-        value,
-      }
-      return [...acc, entry]
     }
+    const entry = {
+      path: path.join('.'),
+      state,
+      value,
+    }
+    return [...acc, entry]
   }, [])
   return formattedLevel
 }
