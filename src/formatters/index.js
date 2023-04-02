@@ -3,17 +3,12 @@ import plain from './plain.js';
 import json from './json.js';
 
 export default (type) => {
-  let formatter
   switch (type) {
     case 'plain':
-      formatter = plain
-      break
+      return plain
     case 'json':
-      formatter = json
-      break
+      return json
     default:
-      formatter = stylish
-      break
+      return stylish
   }
-  return formatter
 }

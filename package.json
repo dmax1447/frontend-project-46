@@ -9,7 +9,7 @@
     "dist"
   ],
   "type": "module",
-  "main": "bin/gendiff.js",
+  "main": "src/gendiff.js",
   "scripts": {
     "build": "babel bin/gendiff.js -d dist/bin",
     "lint": "npx eslint .",
