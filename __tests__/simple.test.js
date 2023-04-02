@@ -67,3 +67,18 @@ test('genDiff should generate correct output with "plain" formatter', () => {
     expect(diffPlain.trim()).toBe(expectedDiffPlain.trim())
   })
 })
+
+test('genDiff should generate correct output with "json" formatter', () => {
+  const extensions = ['json', 'yml']
+  extensions.forEach((extension) => {
+    const diffPlain = genDiff({
+      filepath1: `./__fixtures__/file1n.${extension}`,
+      filepath2: `./__fixtures__/file2n.${extension}`,
+      options: {
+        format: 'json',
+      },
+    })
+    const expectedDiffPlain = getFileContent('./__fixtures__/output.json').toString()
+    expect(diffPlain.trim()).toBe(expectedDiffPlain.trim())
+  })
+})
