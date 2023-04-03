@@ -24,6 +24,7 @@ for cli help use -h option
 output_format
 - stylish format with nested structures
 - plain format as plain list
+- json format 
 
 
 [![asciicast](https://asciinema.org/a/nrneQuvp1wOpbTuTAXr8KWv77.svg)](https://asciinema.org/a/nrneQuvp1wOpbTuTAXr8KWv77)
